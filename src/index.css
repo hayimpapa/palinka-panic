@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #2a1f14;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* prevent the canvas from triggering scroll / pull-to-refresh on touch */
+canvas {
+  touch-action: none;
+  display: block;
+}
