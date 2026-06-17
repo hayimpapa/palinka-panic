@@ -1,0 +1,133 @@
+================================================================================
+PÁLINKA PANIC — FULL BUILD PROMPT
+Week 17 of "52 apps in 52 weeks before I turn 52" by Hey I'm Papa
+================================================================================
+
+Build "Pálinka Panic" — a catching game featuring a Hungarian grandma at a
+village market.
+
+Standalone React app, own GitHub repo, deployable to Vercel.
+
+CONCEPT:
+Nagymama (Hungarian grandma) stands at the bottom of the screen. Pálinka
+bottles fall from the top. You move her left and right to catch them before
+they smash on the ground. The game gets faster and more chaotic. Warm,
+folk-art illustrated style — think Hungarian embroidery meets cartoonish charm.
+
+TECH STACK:
+- React + Vite
+- Canvas API for all game rendering
+- No external image files — draw everything in code using Canvas 2D primitives
+- Tailwind CSS for any UI outside the canvas
+- Vercel-ready with vite.config.js
+
+--------------------------------------------------------------------------------
+CONTROLS:
+- Desktop: LEFT / RIGHT arrow keys, or A / D keys to move Nagymama
+- Mobile: Touch and drag anywhere on screen, or tap left half / right half
+- Game starts on first key press or tap
+
+--------------------------------------------------------------------------------
+GAME MECHANICS:
+- Bottles fall from random horizontal positions at the top
+- Multiple bottles can be falling at once (starts with 1, increases over time)
+- Nagymama has a tray/apron she holds out — this is the catch hitbox
+- Catching a bottle = +10 points, +1 pálinka emoji in a counter top-left
+- Bottle smashes on ground = lose 1 life (start with 3 lives shown as hearts)
+- Game over when all 3 lives lost
+- High score saved to localStorage
+
+DIFFICULTY SCALING:
+- Every 30 seconds: fall speed increases
+- Every 50 points: one extra bottle added to simultaneous drops
+- Every 100 points: bottles briefly wobble/spin making them harder to track
+- Cap difficulty at 5 simultaneous bottles
+
+SCORING:
+- Catching streak bonus: 5 in a row = double points for next 10 catches
+- Rare golden pálinka bottle (10% chance): worth 50 points and a cheer animation
+
+--------------------------------------------------------------------------------
+VISUALS — draw ALL characters and objects using Canvas 2D drawing primitives
+only. No emoji substitutes for main characters. Draw every detail explicitly as
+shapes, arcs, lines, and fills.
+
+NAGYMAMA (player character):
+Body:
+- Short and round body shape, warm and sturdy — a grandma, not a sprite
+- Wide A-line skirt, dark navy blue, reaching below the knee
+- White apron over the skirt with simple red embroidery pattern along the hem
+  (small X-stitch diamonds, drawn as small filled red diamond shapes)
+- Long-sleeved blouse in cream/off-white
+Head and face:
+- Round face, soft peach skin tone
+- Small round eyes with laugh lines (two curved lines beside each eye)
+- A warm smile — small curved mouth, slightly open showing top teeth
+- Rosy cheeks: two soft pink filled circles
+- White hair in a neat bun on top of head (layered arc shapes)
+- Dark headscarf tied under the chin (triangular shape over the bun, polka-dot
+  pattern in dark blue)
+Arms and tray:
+- Short arms outstretched to the sides
+- She holds a wide wooden tray/board in both hands — this is the catch zone
+- Tray: long rectangle, warm brown, slight 3D depth effect, darker bottom edge
+- When catching: brief arm-raise animation (tray lifts 8px upward for 200ms)
+Shoes:
+- Black flat shoes, simple rounded rectangle shapes
+
+ANIMATIONS:
+Idle: gentle breathing — body scales vertically by 1-2% on a 2s sine loop
+Walk: alternating leg arcs, 4-frame cycle when moving
+Catch success: arms raise, tray up, mouth becomes a big O, 6 yellow stars burst
+  and fade over 400ms
+Life lost: front-facing face, frustrated V eyebrows, flat downturned mouth, arms
+  drop, background flashes red 300ms, resets after 1 second
+Golden bottle catch: both arms raised in triumph, "Egészségre!" speech bubble,
+  20-rectangle confetti burst
+
+PÁLINKA BOTTLES:
+Standard: tall narrow glass bottle, light-blue semi-transparent glass, amber
+  liquid fill in lower 60%, round cork, cream "PÁLINKA" label with tiny apricot
+  and leaf, white shine highlight; gentle ±5° wobble (±15° past 100 points)
+Smash: bottle vanishes, 6-8 irregular shards scatter, 4-5 amber teardrop
+  splashes spray up, fade over 500ms
+Golden (10%): gold metallic fill, rotating shimmer highlight, sparkle stars
+
+BACKGROUND:
+- Sky: warm gradient, pale yellow to soft peach
+- Village market stalls (rectangles + red/white striped triangle roofs)
+- Hungarian-colour bunting (red/white/green triangular flags on a curved rope)
+- Rolling green hills silhouette
+- Terracotta cobblestone ground (offset grid lines)
+
+SOUND (Web Audio API only, no files):
+- Catch: warm sine "clink" ~440Hz, 80ms
+- Smash: noise burst + descending tone, 300ms
+- Golden: ascending C-E-G arpeggio, 150ms each
+- Game over: slow descending tone with reverb
+
+UI ELEMENTS:
+- Score: top centre, large bold, dark red (#8B0000)
+- High score: top right, smaller
+- Lives: top left, 3 red heart icons (drawn as Canvas hearts)
+- Pálinka counter: small bottle icon beside total caught
+
+START SCREEN:
+- Title "Pálinka Panic" with folk-art vine/leaf border
+- Subtitle: "Catch the bottles before Nagymama cries! 🧓🍶"
+- Animated Nagymama in idle breathing loop
+- "Tap or press any key to start"
+
+GAME OVER SCREEN:
+- "Ó jaj!" large, final + high score, sad front-facing Nagymama, red "Play
+  Again" button with white folk-art border
+
+ABOUT THIS BUILD TAB:
+- The Problem / The Approach / The Prompt / What Got Built / What I'd Do
+  Differently / GitHub Link — all editable, saved to localStorage
+
+FILES TO CREATE:
+- PROMPTS.txt — full prompt used
+- README.md — project overview, how to run locally, deploy to Vercel
+- vite.config.js — base path './' for Vercel compatibility
+================================================================================
