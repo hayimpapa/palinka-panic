@@ -39,14 +39,16 @@ Scores can't be faked by hitting the API directly:
 
 - The table has **row-level security with no insert policy**, so the public anon
   key is read-only.
-- Writes go through an Edge Function that requires a **signed, single-use session
-  token** issued when the run starts, and **re-checks that the score is even
-  reachable** in the time the run lasted.
+- Scores are written only by a `SECURITY DEFINER` SQL function that requires a
+  **server-side, single-use session** (created when the run starts) and
+  **re-checks that the score is even reachable** in the time the run lasted.
 - Database **`CHECK` constraints** enforce the name format and score shape as a
   final backstop.
 
-Setup lives in [`supabase/README.md`](supabase/README.md). Copy `.env.example`
-to `.env` and fill in `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
+Setup is two steps (no CLI): paste [`supabase/schema.sql`](supabase/schema.sql)
+into the Supabase SQL Editor, then copy `.env.example` to `.env` with your
+`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. See
+[`supabase/README.md`](supabase/README.md) for details.
 
 ## Tech stack
 
@@ -110,8 +112,7 @@ src/
   lib/
     leaderboard.js      # Supabase leaderboard client (fetch-based)
 supabase/
-  migrations/           # high_scores table + RLS + constraints
-  functions/            # start-session + submit-score Edge Functions
+  schema.sql            # paste into Supabase SQL Editor: table + RLS + functions
 PROMPTS.txt             # the full prompt used to build this
 ```
 
