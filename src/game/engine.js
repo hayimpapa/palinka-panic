@@ -31,6 +31,9 @@ export class Game {
     this.reset()
     this.phase = 'start' // 'start' | 'playing' | 'gameover'
     this.startBlink = 0
+    // optional hooks wired up by the React layer (leaderboard, etc.)
+    this.onStart = null
+    this.onGameOver = null
   }
 
   loadHighScore() {
@@ -85,6 +88,7 @@ export class Game {
     unlockAudio()
     this.reset()
     this.phase = 'playing'
+    this.onStart?.()
   }
 
   setMoveDir(dir) {
@@ -256,6 +260,11 @@ export class Game {
       this.saveHighScore()
     }
     playGameOver()
+    this.onGameOver?.({
+      score: this.score,
+      caught: this.caught,
+      elapsed: this.elapsed,
+    })
   }
 
   spawn(dt) {
@@ -444,7 +453,7 @@ export class Game {
 
     // golden-catch speech bubble
     if (f.speechT > 0) {
-      this.drawSpeechBubble(ctx, n.x, BASE_Y - 248, 'Egészségre!')
+      this.drawSpeechBubble(ctx, n.x, BASE_Y - 248, 'Egészségedre!')
     }
   }
 

@@ -1,16 +1,28 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Game, W, H } from '../game/engine.js'
 import { setMuted, isMuted } from '../game/audio.js'
+import { startSession } from '../lib/leaderboard.js'
+import GameOverPanel from './GameOverPanel.jsx'
 
 export default function GameCanvas() {
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
+  const sessionRef = useRef(null)
+  const [over, setOver] = useState(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     const game = new Game()
     gameRef.current = game
+
+    // Leaderboard wiring: open a signed session at the start of each run, and
+    // surface the result so the React overlay can collect initials + show ranks.
+    game.onStart = () => {
+      setOver(null)
+      sessionRef.current = startSession()
+    }
+    game.onGameOver = (info) => setOver(info)
 
     let dpr = Math.min(window.devicePixelRatio || 1, 2)
 
@@ -121,6 +133,7 @@ export default function GameCanvas() {
   }, [])
 
   const toggleMute = () => setMuted(!isMuted())
+  const handlePlayAgain = () => gameRef.current?.start()
 
   return (
     <div className="relative flex h-full w-full items-center justify-center">
@@ -129,6 +142,13 @@ export default function GameCanvas() {
         className="h-full max-h-full w-auto max-w-full rounded-lg shadow-2xl"
         style={{ aspectRatio: `${W} / ${H}` }}
       />
+      {over && (
+        <GameOverPanel
+          info={over}
+          sessionPromise={sessionRef.current}
+          onPlayAgain={handlePlayAgain}
+        />
+      )}
       <button
         onClick={toggleMute}
         className="absolute bottom-3 right-3 rounded-full bg-black/30 px-3 py-1 text-sm text-white backdrop-blur hover:bg-black/50"
