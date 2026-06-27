@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Game, W, H } from '../game/engine.js'
-import { setMuted, isMuted } from '../game/audio.js'
+import { setMuted } from '../game/audio.js'
 import { startSession } from '../lib/leaderboard.js'
 import GameOverPanel from './GameOverPanel.jsx'
 
@@ -9,6 +9,7 @@ export default function GameCanvas() {
   const gameRef = useRef(null)
   const sessionRef = useRef(null)
   const [over, setOver] = useState(null)
+  const [muted, setMutedState] = useState(false)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -132,7 +133,11 @@ export default function GameCanvas() {
     }
   }, [])
 
-  const toggleMute = () => setMuted(!isMuted())
+  const toggleMute = () => {
+    const next = !muted
+    setMuted(next)
+    setMutedState(next)
+  }
   const handlePlayAgain = () => gameRef.current?.start()
 
   return (
@@ -152,10 +157,10 @@ export default function GameCanvas() {
       <button
         onClick={toggleMute}
         className="absolute bottom-3 right-3 rounded-full bg-black/30 px-3 py-1 text-sm text-white backdrop-blur hover:bg-black/50"
-        aria-label="Toggle sound"
-        title="Toggle sound"
+        aria-label={muted ? 'Unmute sound' : 'Mute sound'}
+        title={muted ? 'Unmute sound' : 'Mute sound'}
       >
-        🔊 / 🔇
+        {muted ? '🔇' : '🔊'}
       </button>
     </div>
   )
